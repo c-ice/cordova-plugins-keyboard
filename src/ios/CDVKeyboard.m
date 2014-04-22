@@ -261,17 +261,21 @@
         return;
     }
     _savedWebViewFrame = self.webView.frame;
-
+ 
     CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
-
+ 
     CGRect newFrame = _savedWebViewFrame;
     CGFloat actualKeyboardHeight = (keyboardFrame.size.height - _accessoryBarHeight);
     newFrame.size.height -= actualKeyboardHeight;
-
+ 
     self.webView.frame = newFrame;
     self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-
+   
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.1")) {
+        self.webView.scrollView.contentInset = UIEdgeInsetsMake(_accessoryBarHeight, 0, 0, 0);
+    }
+ 
     if (self.disableScrollingInShrinkView) {
         self.webView.scrollView.scrollEnabled = NO;
     }
