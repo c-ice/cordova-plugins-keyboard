@@ -24,8 +24,6 @@
 #warning "The keyboard plugin is only supported in Cordova 3.2 or greater, it may not work properly in an older version. If you do use this plugin in an older version, make sure the HideKeyboardFormAccessoryBar and KeyboardShrinksView preference values are false."
 #endif
 
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-
 @interface CDVKeyboard ()
 
 @property (nonatomic, readwrite, assign) BOOL keyboardIsVisible;
@@ -166,8 +164,7 @@
 
     // No-op on iOS7.  It already resizes webview by default, and this plugin is causing layout issues
     // with fixed position elements.  We possibly should attempt to implement shringview = false on iOS7.
-    if (!IsAtLeastiOSVersion(@"7.0") ||
-        SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.1")) {
+    if (!IsAtLeastiOSVersion(@"7.0")) {
         if (ashrinkView) {
             [nc removeObserver:_shrinkViewKeyboardShowObserver];
             _shrinkViewKeyboardShowObserver = [nc addObserverForName:UIKeyboardWillShowNotification
@@ -264,52 +261,17 @@
         return;
     }
     _savedWebViewFrame = self.webView.frame;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    
+
     CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
-    
+
     CGRect newFrame = _savedWebViewFrame;
     CGFloat actualKeyboardHeight = (keyboardFrame.size.height - _accessoryBarHeight);
     newFrame.size.height -= actualKeyboardHeight;
-    
-//    self.webView.frame = newFrame;
-    self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
-//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.1")) {
-//        self.webView.scrollView.contentInset = UIEdgeInsetsMake(_accessoryBarHeight, 0, 0, 0);
-//    }
-    
-=======
- 
-    CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
- 
-    CGRect newFrame = _savedWebViewFrame;
-    CGFloat actualKeyboardHeight = (keyboardFrame.size.height - _accessoryBarHeight);
-    newFrame.size.height -= actualKeyboardHeight;
-=======
- 
-    CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
- 
-    CGRect newFrame = _savedWebViewFrame;
-    CGFloat actualKeyboardHeight = (keyboardFrame.size.height - _accessoryBarHeight);
-    newFrame.size.height -= actualKeyboardHeight;
->>>>>>> FETCH_HEAD
- 
+
     self.webView.frame = newFrame;
     self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-   
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.1")) {
-        self.webView.scrollView.contentInset = UIEdgeInsetsMake(_accessoryBarHeight, 0, 0, 0);
-    }
- 
-<<<<<<< HEAD
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
+
     if (self.disableScrollingInShrinkView) {
         self.webView.scrollView.scrollEnabled = NO;
     }
