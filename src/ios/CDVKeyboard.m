@@ -265,6 +265,7 @@
     }
     _savedWebViewFrame = self.webView.frame;
 <<<<<<< HEAD
+<<<<<<< HEAD
     
     CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
@@ -288,6 +289,15 @@
     CGRect newFrame = _savedWebViewFrame;
     CGFloat actualKeyboardHeight = (keyboardFrame.size.height - _accessoryBarHeight);
     newFrame.size.height -= actualKeyboardHeight;
+=======
+ 
+    CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
+ 
+    CGRect newFrame = _savedWebViewFrame;
+    CGFloat actualKeyboardHeight = (keyboardFrame.size.height - _accessoryBarHeight);
+    newFrame.size.height -= actualKeyboardHeight;
+>>>>>>> FETCH_HEAD
  
     self.webView.frame = newFrame;
     self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -296,6 +306,9 @@
         self.webView.scrollView.contentInset = UIEdgeInsetsMake(_accessoryBarHeight, 0, 0, 0);
     }
  
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
     if (self.disableScrollingInShrinkView) {
         self.webView.scrollView.scrollEnabled = NO;
