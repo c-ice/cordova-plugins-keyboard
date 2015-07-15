@@ -260,10 +260,11 @@
 
 - (void)shrinkViewKeyboardWillShow:(NSNotification*)notif
 {
-    if (!_shrinkView) {
+    if (!_shrinkView || _shrinked) {
         return;
     }
     _savedWebViewFrame = self.webView.frame;
+    _shrinked = YES;
     
     CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
@@ -295,6 +296,7 @@
 - (void)shrinkViewKeyboardWillHideHelper:(NSNotification*)notif
 {
     self.webView.scrollView.scrollEnabled = YES;
+    _shrinked = NO;
     
     CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
