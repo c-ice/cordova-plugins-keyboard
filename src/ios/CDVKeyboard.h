@@ -23,6 +23,8 @@
     @protected
     CGRect _savedWebViewFrame;
     @protected
+    CGFloat _lastKeyboardHeight;
+    @protected
     BOOL _shrinked;
     @protected
     BOOL _shrinkView;

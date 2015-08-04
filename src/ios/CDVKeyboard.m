@@ -64,6 +64,8 @@
     
     //////////////////////////
     
+    _lastKeyboardHeight = 0;
+    
     NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
     __weak CDVKeyboard* weakSelf = self;
     
@@ -260,18 +262,32 @@
 
 - (void)shrinkViewKeyboardWillShow:(NSNotification*)notif
 {
-    if (!_shrinkView || _shrinked) {
+    if (!_shrinkView) {
         return;
     }
-    _savedWebViewFrame = self.webView.frame;
-    _shrinked = YES;
     
     CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.viewController.view convertRect:keyboardFrame fromView:nil];
     
-    CGRect newFrame = _savedWebViewFrame;
     CGFloat actualKeyboardHeight = (keyboardFrame.size.height - _accessoryBarHeight);
-    newFrame.size.height -= actualKeyboardHeight;
+    CGFloat diffKeyHeight = actualKeyboardHeight - _lastKeyboardHeight;
+    
+    if (diffKeyHeight != 0 && _lastKeyboardHeight > 0) {
+        _lastKeyboardHeight = actualKeyboardHeight;
+    } else {
+        if (_shrinked) {
+            return;
+        }
+        
+        diffKeyHeight = actualKeyboardHeight;
+        _lastKeyboardHeight = actualKeyboardHeight;
+        _savedWebViewFrame = self.webView.frame;
+    }
+    
+    _shrinked = YES;
+    
+    CGRect newFrame = _savedWebViewFrame;
+    newFrame.size.height -= diffKeyHeight;
     
     self.webView.frame = newFrame;
     self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
